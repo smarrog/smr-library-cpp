@@ -58,6 +58,9 @@ namespace smr {
             return std::get<int>(*this);
         }
         double asFloat() const {
+        	if (isInt()) {
+        		return static_cast<double>(asInt());
+        	}
             return std::get<double>(*this);
         }
         const std::string& asString() const {
