@@ -5,17 +5,22 @@
 
 using namespace smr;
 
-void JsonEncoder::nextLine() {
-    if (hasFlag(Serializer::PRETTY)) {
-        _os << '\n';
-        tokenToStream(_os, '\t', _offset);
-    }
-}
-
-void JsonEncoder::addSpacing() {
-    if (hasFlag(Serializer::PRETTY)) {
-        tokenToStream(_os, ' ');
-    }
+void JsonEncoder::encode(const Serializable& serializable) {
+	if (serializable.isNull()) {
+		return encode(serializable.asNull());
+	} else if (serializable.isBool()) {
+		return encode(serializable.asBool());
+	} else if (serializable.isInt()) {
+		return encode(serializable.isInt());
+	} else if (serializable.isFloat()) {
+		return encode(serializable.asFloat());
+	} else if (serializable.isString()) {
+		return encode(serializable.asString());
+	} else if (serializable.isArray()) {
+		return encode(serializable.asArray());
+	} else if (serializable.isObject()) {
+		return encode(serializable.asObject());
+	}
 }
 
 void JsonEncoder::encode(std::nullptr_t) {
@@ -119,4 +124,17 @@ void JsonEncoder::encode(const Object& value) {
         addSpacing();
         encode(elem.second);
     });
+}
+
+void JsonEncoder::nextLine() {
+	if (hasFlag(Serializer::PRETTY)) {
+		_os << '\n';
+		tokenToStream(_os, '\t', _offset);
+	}
+}
+
+void JsonEncoder::addSpacing() {
+	if (hasFlag(Serializer::PRETTY)) {
+		tokenToStream(_os, ' ');
+	}
 }

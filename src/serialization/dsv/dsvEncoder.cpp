@@ -2,30 +2,13 @@
 
 using namespace smr;
 
-void DsvEncoder::encode(std::nullptr_t) {
-	throw std::runtime_error("Not implemented");
-}
-
-void DsvEncoder::encode(bool value) {
-	throw std::runtime_error("Not implemented");
-}
-
-void DsvEncoder::encode(int value) {
-	throw std::runtime_error("Not implemented");
-}
-
-void DsvEncoder::encode(double value) {
-	throw std::runtime_error("Not implemented");
-}
-
-void DsvEncoder::encode(const std::string& value) {
-	throw std::runtime_error("Not implemented");
-}
-
-void DsvEncoder::encode(const Array& value) {
+void DsvEncoder::encode(const Serializable& serializable) {
+	if (!serializable.isArray()) {
+		throw std::runtime_error("Value is not array");
+	}
 	auto isFirstRow = true;
 	bool isFirstCol;
-	for (auto& rowElem : value) {
+	for (auto& rowElem : serializable.asArray()) {
 		if (!isFirstRow) {
 			_os << '\n';
 		}
@@ -39,8 +22,4 @@ void DsvEncoder::encode(const Array& value) {
 			_os << elem.asString();
 		}
 	}
-}
-
-void DsvEncoder::encode(const Object& value) {
-	throw std::runtime_error("Not implemented");
 }

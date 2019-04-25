@@ -19,16 +19,7 @@ private:                                                        \
         : Encoder(os, flags) {}                                 \
                                                                 \
 protected:                                                      \
-    void encode(const Serializable& serializable) override {    \
-        Encoder::encode(serializable);                          \
-    }                                                           \
-    void encode(std::nullptr_t value) override;                 \
-    void encode(bool value) override;                           \
-    void encode(int value) override;                            \
-    void encode(double value) override;                         \
-    void encode(const std::string& value) override;             \
-    void encode(const Array& value) override;                   \
-    void encode(const Object& value) override;
+    void encode(const Serializable& serializable) override;
 
 namespace smr {
     class Encoder {
@@ -46,15 +37,7 @@ namespace smr {
         std::ostream& _os;
         size_t _flags;
 
-        virtual void encode(const Serializable& serializable);
-
-        virtual void encode(std::nullptr_t value) = 0;
-        virtual void encode(bool value) = 0;
-        virtual void encode(int value) = 0;
-        virtual void encode(double value) = 0;
-        virtual void encode(const std::string& value) = 0;
-        virtual void encode(const Array& value) = 0;
-        virtual void encode(const Object& value) = 0;
+        virtual void encode(const Serializable& serializable) = 0;
 
         bool hasFlag(uint32_t flag) {
             return (_flags & flag) > 0;
