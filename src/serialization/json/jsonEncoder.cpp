@@ -23,8 +23,12 @@ void JsonEncoder::encode(bool value) {
     _os << (value ? "true" : "false");
 }
 
-template<typename T, typename std::enable_if<std::is_integral<T>::value || std::is_floating_point<T>::value, void>::type*>
-void JsonEncoder::encode(T value) {
+void JsonEncoder::encode(int value) {
+    _os << std::dec;
+    _os << value;
+}
+
+void JsonEncoder::encode(double value) {
     _os << std::setprecision(std::numeric_limits<double>::digits10 + 1) << std::dec;
     _os << value;
 }
@@ -112,24 +116,4 @@ void JsonEncoder::encode(const Serializable::Object& value) {
         addSpacing();
         encode(elem.second);
     });
-}
-
-void JsonEncoder::encode(const Serializable& serializable) {
-    if (serializable.isArray()) {
-        encode(serializable.asArray());
-    } else if (serializable.isObject()) {
-        encode(serializable.asObject());
-    } else if (serializable.isString()) {
-        encode(serializable.asString());
-    } else if (serializable.isFloat()) {
-        encode(serializable.asFloat());
-    } else if (serializable.isInt()) {
-        encode(serializable.asInt());
-    } else if (serializable.isBool()) {
-        encode(serializable.asBool());
-    } else if (serializable.isNull()) {
-        encode(nullptr);
-    } else {
-        throw std::runtime_error("Unsupported serializable value");
-    }
 }
