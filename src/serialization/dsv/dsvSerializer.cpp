@@ -12,7 +12,7 @@ REGISTER_SERIALIZER(dsv, DsvSerializer)
 
 Serializable DsvSerializer::decode(std::istream& is) const {
 	try {
-		return DsvDecoder(is, _flags).decode();
+		return DsvDecoder(is, _flags).decode(',');
 	} catch(std::exception& exception) {
 		throw DecodeException("dsv", is, exception);
 	}
@@ -20,7 +20,7 @@ Serializable DsvSerializer::decode(std::istream& is) const {
 
 void DsvSerializer::encode(std::ostream& os, const Serializable& value) const {
 	try {
-		return DsvEncoder(os, _flags).encode(value);
+		return DsvEncoder(os, _flags).encode(value, ',');
 	} catch(std::exception& exception) {
 		throw EncodeException("dsv", exception);
 	}

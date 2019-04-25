@@ -4,21 +4,6 @@
 #include <stdexcept>
 #include <istream>
 
-#define DECLARE_DECODER(Serializer, Class)              \
-    friend Serializer;                                  \
-                                                        \
-public:                                                 \
-    Class(const Class&) = delete;                       \
-    Class& operator = (Class const&) = delete;          \
-    Class(Class&&) noexcept = delete;                   \
-    Class& operator = (Class&&) noexcept = delete;      \
-                                                        \
-    Serializable decode();                              \
-                                                        \
-private:                                                \
-    explicit Class(std::istream& is, size_t flags)      \
-        : Decoder(is, flags) {}
-
 namespace smr {
     class Decoder {
     public:

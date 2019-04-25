@@ -2,7 +2,7 @@
 
 using namespace smr;
 
-void DsvEncoder::encode(const Serializable& serializable) {
+void DsvEncoder::encode(const Serializable& serializable, char separator) {
 	if (!serializable.isArray()) {
 		throw std::runtime_error("Value is not array");
 	}
@@ -16,7 +16,7 @@ void DsvEncoder::encode(const Serializable& serializable) {
 		isFirstCol = true;
 		for (auto& elem : rowElem.asArray()) {
 			if (!isFirstCol) {
-				_os << ',';
+				_os << separator;
 			}
 			isFirstCol = false;
 			_os << elem.asString();

@@ -7,12 +7,19 @@
 
 namespace smr {
 	class DsvDecoder final : public Decoder {
-		DECLARE_DECODER(DsvSerializer, DsvDecoder)
+	public:
+		explicit DsvDecoder(std::istream& is, size_t flags)
+		: Decoder(is, flags) {}
+		DsvDecoder(const DsvDecoder&) = delete;
+		DsvDecoder& operator = (DsvDecoder const&) = delete;
+		DsvDecoder(DsvDecoder&&) noexcept = delete;
+		DsvDecoder& operator = (DsvDecoder&&) noexcept = delete;
+
+        Serializable decode(char separator);
 
 	private:
-		Array decodeLine(std::string_view sv);
+		Array decodeLine(std::string_view sv, char separator);
 
 		size_t _expectedSize = -1;
-		const char _separator = ',';
 	};
 }

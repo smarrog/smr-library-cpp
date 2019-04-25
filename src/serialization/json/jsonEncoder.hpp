@@ -5,7 +5,16 @@
 
 namespace smr {
     class JsonEncoder final : public Encoder {
-    DECLARE_ENCODER(JsonSerializer, JsonEncoder)
+    public:
+	    explicit JsonEncoder(std::ostream& os, size_t flags)
+	    : Encoder(os, flags) {}
+
+	    JsonEncoder(const JsonEncoder&) = delete;
+	    JsonEncoder& operator = (JsonEncoder const&) = delete;
+	    JsonEncoder(JsonEncoder&&) noexcept = delete;
+	    JsonEncoder& operator = (JsonEncoder&&) noexcept = delete;
+
+	    void encode(const Serializable& serializable);
 
     private:
         size_t _offset = 0;

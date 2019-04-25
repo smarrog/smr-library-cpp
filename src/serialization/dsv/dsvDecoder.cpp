@@ -2,23 +2,23 @@
 
 using namespace smr;
 
-Serializable DsvDecoder::decode() {
+Serializable DsvDecoder::decode(char separator) {
 	std::string line;
 	std::getline(_is, line, '\n');
-	Array array{ { decodeLine(line) } };
+	Array array{ { decodeLine(line, separator) } };
 	_expectedSize = array[0].asArray().size();
 	while (_is.peek() != -1) {
 		std::getline(_is, line, '\n');
-		array.emplace_back(decodeLine(line));
+		array.emplace_back(decodeLine(line, separator));
 	}
 	return array;
 }
 
-Array DsvDecoder::decodeLine(std::string_view sv) {
+Array DsvDecoder::decodeLine(std::string_view sv, char separator) {
 	Array array;
 	int pos = 0;
 	while (!sv.empty() && pos != std::string_view::npos) {
-		pos = sv.find(_separator);
+		pos = sv.find(separator);
 		array.emplace_back(std::string((sv.substr(0, pos))));
 		sv.remove_prefix(pos + 1);
 	}
