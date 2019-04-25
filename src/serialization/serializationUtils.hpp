@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <serialization/exceptions/tokenException.hpp>
 
 namespace smr {
     template <typename T>
@@ -15,9 +16,26 @@ namespace smr {
         }
     }
 
+    template <typename T>
+    void checkToken(std::istream& is, T c) {
+        if (is.peek() == c) {
+            is.ignore(1);
+        } else {
+            throw TokenException(is.peek());
+        }
+    }
+
+    template <typename T>
+    void checkToken(std::istream& is, T c, const std::string& location) {
+        try {
+            checkToken(is, c);
+        } catch (...) {
+            throw TokenException(is.peek(), std::string(" in ") + location + std::string(" while waiting for ") + std::to_string(c));
+        }
+    }
+
     void utf8SymbolToStream(std::ostream& os, uint32_t symbol);
 
-    void checkToken(std::istream& is, char c);
     bool skipToken(std::istream& is, char c);
     void checkWord(std::istream& is, const std::string& word);
     void skipSpaces(std::istream& is);

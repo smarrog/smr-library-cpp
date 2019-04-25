@@ -1,15 +1,5 @@
 #include "serializationUtils.hpp"
 
-#include "exceptions/tokenException.hpp"
-
-void smr::checkToken(std::istream& is, char c) {
-    if (is.peek() == c) {
-        is.ignore(1);
-    } else {
-        throw TokenException(is.peek());
-    }
-}
-
 bool smr::skipToken(std::istream& is, char c) {
     if (is.peek() == c) {
         is.ignore(1);
