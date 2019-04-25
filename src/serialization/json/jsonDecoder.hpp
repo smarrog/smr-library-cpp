@@ -2,7 +2,7 @@
 
 #include "jsonSerializer.hpp"
 #include "../decoder.hpp"
-#include "../serializable.hpp"
+#include "serialization/types/serializable.hpp"
 
 namespace smr {
     class JsonDecoder final : public Decoder {

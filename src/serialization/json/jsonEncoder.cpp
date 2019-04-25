@@ -104,13 +104,13 @@ void JsonEncoder::encodeContainer(const Container& container, char open, char cl
     _os << close;
 }
 
-void JsonEncoder::encode(const Serializable::Array& value) {
+void JsonEncoder::encode(const Array& value) {
     encodeContainer(value, '[', ']', [this](const auto& elem) {
         encode(elem);
     });
 }
 
-void JsonEncoder::encode(const Serializable::Object& value) {
+void JsonEncoder::encode(const Object& value) {
     encodeContainer(value, '{', '}', [this](const auto& elem) {
         _os << '"' << elem.first << "\":";
         addSpacing();

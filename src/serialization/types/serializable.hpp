@@ -1,30 +1,24 @@
 #pragma once
 
+#include "array.hpp"
+#include "object.hpp"
+
 #include <string>
-#include <vector>
-#include <map>
 #include <iostream>
 #include <variant>
 
 namespace smr {
-    class Serializable;
-
-    using Variant = std::variant<
+    class Serializable : public std::variant<
             nullptr_t,
             bool,
             int,
             double,
             std::string,
-            std::vector<Serializable>,
-            std::map<std::string, Serializable> // TODO реализовать unordered_map
-    >;
-
-    class Serializable : public Variant {
+            Array,
+            Object
+    > {
     public:
         using variant::variant;
-
-        using Array = std::vector<Serializable>;
-        using Object = std::map<std::string, Serializable>;
 
         bool isNull() const {
             return std::holds_alternative<nullptr_t>(*this);

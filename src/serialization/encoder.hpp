@@ -1,7 +1,7 @@
 #pragma once
 
 #include "serializationUtils.hpp"
-#include "serializable.hpp"
+#include "serialization/types/serializable.hpp"
 
 #include <ostream>
 #include <iomanip>
@@ -28,8 +28,8 @@ protected:                                                      \
     void encode(int value) override;                            \
     void encode(double value) override;                         \
     void encode(const std::string& value) override;             \
-    void encode(const Serializable::Array& value) override;     \
-    void encode(const Serializable::Object& value) override;
+    void encode(const Array& value) override;                   \
+    void encode(const Object& value) override;
 
 namespace smr {
     class Encoder {
@@ -54,8 +54,8 @@ namespace smr {
         virtual void encode(int value) = 0;
         virtual void encode(double value) = 0;
         virtual void encode(const std::string& value) = 0;
-        virtual void encode(const Serializable::Array& value) = 0;
-        virtual void encode(const Serializable::Object& value) = 0;
+        virtual void encode(const Array& value) = 0;
+        virtual void encode(const Object& value) = 0;
 
         bool hasFlag(uint32_t flag) {
             return (_flags & flag) > 0;

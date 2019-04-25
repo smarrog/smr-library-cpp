@@ -45,7 +45,7 @@ Serializable JsonDecoder::decode() {
 
 Serializable JsonDecoder::decodeArray() {
     checkToken(_is, '[');
-    Serializable::Array result;
+    Array result;
     skipSpaces(_is);
     if (skipToken(_is, ']')) {
         return result;
@@ -67,7 +67,7 @@ Serializable JsonDecoder::decodeArray() {
 
 Serializable JsonDecoder::decodeObject() {
     checkToken(_is, '{');
-    Serializable::Object result;
+    Object result;
     skipSpaces(_is);
     if (skipToken(_is, '}')) {
         return result;

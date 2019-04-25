@@ -1,6 +1,6 @@
 #pragma once
 
-#include "serializable.hpp"
+#include "serialization/types/serializable.hpp"
 #include "serializerFactory.hpp"
 #include "../stuff/dummy.hpp"
 

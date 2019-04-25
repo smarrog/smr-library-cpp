@@ -2,7 +2,7 @@
 
 #include "jsonSerializer.hpp"
 #include "../encoder.hpp"
-#include "../serializable.hpp"
+#include "serialization/types/serializable.hpp"
 
 namespace smr {
     class JsonEncoder final : public Encoder {
