@@ -1,6 +1,5 @@
 #pragma once
 
-#include "serializationUtils.hpp"
 #include "serialization/types/serializable.hpp"
 
 #include <ostream>

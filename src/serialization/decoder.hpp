@@ -1,7 +1,5 @@
 #pragma once
 
-#include "serializationUtils.hpp"
-
 #include <string>
 #include <stdexcept>
 #include <istream>

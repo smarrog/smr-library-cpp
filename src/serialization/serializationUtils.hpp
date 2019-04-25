@@ -4,11 +4,6 @@
 
 namespace smr {
     template <typename T>
-    std::string token(T token) {
-        return std::string(">") + std::to_string(token) + std::string("<");
-    }
-
-    template <typename T>
     void tokenToStream(std::ostream& os, T token) {
         os << static_cast<char>(token);
     }

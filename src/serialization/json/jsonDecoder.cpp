@@ -1,5 +1,8 @@
 #include "jsonDecoder.hpp"
 
+#include "serialization/serializationUtils.hpp"
+#include "../exceptions/tokenException.hpp"
+
 #include <string>
 #include <vector>
 #include <map>
@@ -39,7 +42,7 @@ Serializable JsonDecoder::decode() {
         case '9':
             return decodeNumber();
         default:
-            throw std::runtime_error(std::string("Unexpected token ") + token(_is.peek()));
+            throw TokenException(_is.peek());
     }
 }
 
@@ -60,7 +63,7 @@ Serializable JsonDecoder::decodeArray() {
         if (skipToken(_is, ']')) {
             return result;
         }
-        throw std::runtime_error(std::string("Unexpected token ") + token(_is.peek()));
+        throw TokenException(_is.peek());
     }
     throw std::runtime_error("Unexpected EOF");
 }
@@ -86,7 +89,7 @@ Serializable JsonDecoder::decodeObject() {
         if (skipToken(_is, '}')) {
             return result;
         }
-        throw std::runtime_error(std::string("Unexpected token ") + token(_is.peek()));
+        throw TokenException(_is.peek());
     }
     throw std::runtime_error("Unexpected EOF");
 }
@@ -102,9 +105,9 @@ Serializable JsonDecoder::decodeString() {
         } else if (next == '\\') {
             utf8SymbolToStream(oss, getEscaped(_is));
         } else if (next < ' ' && next != '\t' && next != '\r' && next != '\n') {
-            throw std::runtime_error(std::string("Unexpected token ") + token(next) + " in string");
+            throw TokenException(next);
         } else if (next > 0b1111'1101) {
-            throw std::runtime_error(std::string("Unexpected token ") + token(next) + " in string");
+            throw TokenException(next);
         } else if (next < 0b1000'0000) {
             tokenToStream(oss, _is.get());
         } else {

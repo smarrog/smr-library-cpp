@@ -1,10 +1,12 @@
 #include "serializationUtils.hpp"
 
+#include "exceptions/tokenException.hpp"
+
 void smr::checkToken(std::istream& is, char c) {
     if (is.peek() == c) {
         is.ignore(1);
     } else {
-        throw std::runtime_error(std::string("Unexpected token ") + token(is.peek()) + " while wait for " + token(c));
+        throw TokenException(is.peek());
     }
 }
 
@@ -33,12 +35,12 @@ void smr::skipSpaces(std::istream& is) {
 void smr::readExponent(std::ostream& os, std::istream& is) {
     auto next = is.get();
     if (next != 'e' && next != 'E') {
-        throw std::runtime_error(std::string("Unexpected token ") + token(next) + " while wait for " + token('e') + " or " + token('E'));
+        throw TokenException(next);
     }
     tokenToStream(os, next);
     next = is.get();
     if (next != '-' && next != '+') {
-        throw std::runtime_error(std::string("Unexpected token ") + token(next) + "while wait for " + token('-') + " or " + token('+'));
+        throw TokenException(next);
     }
     tokenToStream(os, next);
     while (std::isdigit(is.peek())) {
@@ -118,12 +120,12 @@ uint32_t smr::getUtf8Symbol(std::istream& is) {
         bytes = 2;
         symbol = static_cast<uint8_t>(next) & static_cast<uint8_t>(0b11111);
     } else {
-        throw std::runtime_error(std::string("Unexpected token ") + token(next) + " while reading utf8");
+        throw TokenException(next);
     }
     while (--bytes && is.peek() != -1) {
         next = is.get();
         if ((next & 0b11000000) != 0b10000000) {
-            throw std::runtime_error(std::string("Unexpected token ") + token(next) + " while reading utf8");
+            throw TokenException(next);
         }
         symbol = (symbol << 6) | (next & 0b0011'1111);
     }
@@ -144,7 +146,7 @@ uint32_t smr::getUnicodeSymbol(std::istream& is) {
         } else if (next >= 'a' && next <= 'f') {
             value = (value << 4) | ((10 + next - 'a') & 0x0F);
         } else {
-            throw std::runtime_error(std::string("Unexpected token ") + token(next) + " in unicode");
+            throw TokenException(next);
         }
     }
     return value;
@@ -169,7 +171,7 @@ uint32_t smr::getEscapedSymbol(std::istream& is) {
         case 'u':
             return getUnicodeSymbol(is);
         default:
-            throw std::runtime_error(std::string("Unexpected token ") + token(next) + " in escaped-sequece");
+            throw TokenException(next);
     }
 }
 
