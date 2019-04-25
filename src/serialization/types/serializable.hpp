@@ -1,5 +1,6 @@
 #pragma once
 
+#include "undefined.hpp"
 #include "array.hpp"
 #include "object.hpp"
 
@@ -9,6 +10,7 @@
 
 namespace smr {
     class Serializable : public std::variant<
+            Undefined,
             nullptr_t,
             bool,
             int,
@@ -20,6 +22,9 @@ namespace smr {
     public:
         using variant::variant;
 
+        bool isUndefined() const {
+            return std::holds_alternative<Undefined>(*this);
+        }
         bool isNull() const {
             return std::holds_alternative<nullptr_t>(*this);
         }
