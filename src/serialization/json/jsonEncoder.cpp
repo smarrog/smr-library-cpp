@@ -18,7 +18,7 @@ void JsonEncoder::addSpacing() {
     }
 }
 
-void JsonEncoder::encode(nullptr_t) {
+void JsonEncoder::encode(std::nullptr_t) {
     _os << "null";
 }
 

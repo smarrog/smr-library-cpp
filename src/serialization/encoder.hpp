@@ -22,7 +22,7 @@ protected:                                                      \
     void encode(const Serializable& serializable) override {    \
         Encoder::encode(serializable);                          \
     }                                                           \
-    void encode(nullptr_t value) override;                      \
+    void encode(std::nullptr_t value) override;                 \
     void encode(bool value) override;                           \
     void encode(int value) override;                            \
     void encode(double value) override;                         \
@@ -48,7 +48,7 @@ namespace smr {
 
         virtual void encode(const Serializable& serializable);
 
-        virtual void encode(nullptr_t value) = 0;
+        virtual void encode(std::nullptr_t value) = 0;
         virtual void encode(bool value) = 0;
         virtual void encode(int value) = 0;
         virtual void encode(double value) = 0;

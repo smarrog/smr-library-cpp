@@ -11,7 +11,7 @@
 namespace smr {
     class Serializable : public std::variant<
             Undefined,
-            nullptr_t,
+            std::nullptr_t,
             bool,
             int,
             double,
@@ -26,7 +26,7 @@ namespace smr {
             return std::holds_alternative<Undefined>(*this);
         }
         bool isNull() const {
-            return std::holds_alternative<nullptr_t>(*this);
+            return std::holds_alternative<std::nullptr_t>(*this);
         }
         bool isBool() const {
             return std::holds_alternative<bool>(*this);
@@ -47,8 +47,8 @@ namespace smr {
             return std::holds_alternative<Object>(*this);
         }
 
-        nullptr_t asNull() const {
-            return std::get<nullptr_t>(*this);
+	    std::nullptr_t asNull() const {
+            return std::get<std::nullptr_t>(*this);
         }
         bool asBool() const {
             return std::get<bool>(*this);

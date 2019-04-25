@@ -4,11 +4,7 @@
 #include "../exceptions/decodeException.hpp"
 #include "../exceptions/encodeException.hpp"
 
-#include <string>
-#include <vector>
-#include <map>
 #include <iostream>
-#include <sstream>
 
 using namespace smr;
 
