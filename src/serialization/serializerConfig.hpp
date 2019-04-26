@@ -1,6 +1,10 @@
 #pragma once
 
-struct SerializerConfig {
-    uint32_t flags;
-    char separator;
-};
+#include "stuff/flags.hpp"
+
+namespace smr {
+    struct SerializerConfig {
+        Flags flags;
+        char separator;
+    };
+}

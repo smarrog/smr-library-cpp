@@ -19,9 +19,5 @@ namespace smr {
 
         std::istream& _is;
         const SerializerConfig& _config;
-
-        bool hasFlag(uint32_t flag) {
-            return (_config.flags & flag) > 0;
-        }
     };
 }

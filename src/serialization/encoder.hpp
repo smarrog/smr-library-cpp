@@ -20,10 +20,6 @@ namespace smr {
 
         std::ostream& _os;
         const SerializerConfig& _config;
-
-        bool hasFlag(uint32_t flag) {
-            return (_config.flags & flag) > 0;
-        }
     };
 }
 
