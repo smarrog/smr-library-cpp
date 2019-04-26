@@ -11,7 +11,7 @@ void JsonEncoder::encode(const Serializable& serializable) {
 	} else if (serializable.isBool()) {
 		return encode(serializable.asBool());
 	} else if (serializable.isInt()) {
-		return encode(serializable.isInt());
+		return encode(serializable.asInt());
 	} else if (serializable.isFloat()) {
 		return encode(serializable.asFloat());
 	} else if (serializable.isString()) {
