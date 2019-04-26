@@ -8,14 +8,14 @@
 namespace smr {
 	class DsvDecoder final : public Decoder {
 	public:
-		explicit DsvDecoder(std::istream& is, size_t flags)
-		: Decoder(is, flags) {}
+		explicit DsvDecoder(std::istream& is, const SerializerConfig& config)
+		    : Decoder(is, config) {}
 		DsvDecoder(const DsvDecoder&) = delete;
 		DsvDecoder& operator = (DsvDecoder const&) = delete;
 		DsvDecoder(DsvDecoder&&) noexcept = delete;
 		DsvDecoder& operator = (DsvDecoder&&) noexcept = delete;
 
-        Serializable decode(char separator);
+        Serializable decode();
 
 	private:
 		Array decodeLine(std::string_view sv, char separator);

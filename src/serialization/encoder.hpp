@@ -14,15 +14,15 @@ namespace smr {
         Encoder& operator = (Encoder&&) noexcept = delete;
 
     protected:
-        Encoder(std::ostream& os, size_t flags)
+        Encoder(std::ostream& os, const SerializerConfig& config)
             : _os(os)
-            , _flags(flags) {}
+            , _config(config) {}
 
         std::ostream& _os;
-        size_t _flags;
+        const SerializerConfig& _config;
 
         bool hasFlag(uint32_t flag) {
-            return (_flags & flag) > 0;
+            return (_config.flags & flag) > 0;
         }
     };
 }

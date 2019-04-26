@@ -6,8 +6,8 @@
 namespace smr {
     class JsonEncoder final : public Encoder {
     public:
-	    explicit JsonEncoder(std::ostream& os, size_t flags)
-	    : Encoder(os, flags) {}
+	    explicit JsonEncoder(std::ostream& os, const SerializerConfig& config)
+	    : Encoder(os, config) {}
 
 	    JsonEncoder(const JsonEncoder&) = delete;
 	    JsonEncoder& operator = (JsonEncoder const&) = delete;

@@ -4,10 +4,12 @@
 #include <functional>
 #include <memory>
 
+#include "serializerConfig.hpp"
+
 namespace smr {
     class Serializer;
 
-    using SerializerConstructor = std::function<std::shared_ptr<Serializer>(uint32_t)>;
+    using SerializerConstructor = std::function<std::shared_ptr<Serializer>(SerializerConfig)>;
 
     class SerializerFactory final {
     public:
@@ -17,7 +19,7 @@ namespace smr {
         SerializerFactory& operator = (SerializerFactory&&) noexcept = delete;
 
         static void reg(const std::string& type, SerializerConstructor constructor);
-        static std::shared_ptr<Serializer> build(const std::string& type, uint32_t flags = 0);
+        static std::shared_ptr<Serializer> build(const std::string& type, SerializerConfig config = {});
     private:
         SerializerFactory() = default;
 

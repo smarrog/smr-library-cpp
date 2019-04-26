@@ -2,14 +2,14 @@
 
 using namespace smr;
 
-Serializable DsvDecoder::decode(char separator) {
+Serializable DsvDecoder::decode() {
 	std::string line;
 	std::getline(_is, line, '\n');
-	Array array{ { decodeLine(line, separator) } };
+	Array array{ { decodeLine(line, _config.separator) } };
 	_expectedSize = array[0].asArray().size();
 	while (_is.peek() != -1) {
 		std::getline(_is, line, '\n');
-		array.emplace_back(decodeLine(line, separator));
+		array.emplace_back(decodeLine(line, _config.separator));
 	}
 	return array;
 }

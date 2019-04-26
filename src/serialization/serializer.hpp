@@ -2,6 +2,7 @@
 
 #include "serialization/types/serializable.hpp"
 #include "serializerFactory.hpp"
+#include "serializerConfig.hpp"
 #include "../stuff/dummy.hpp"
 
 #include <string>
@@ -14,8 +15,8 @@
 
 #define REGISTER_SERIALIZER(id, Class)                                          \
     const Dummy Class::_dummy = [](){                                           \
-        SerializerFactory::reg(#id, [](uint32_t flags) {                        \
-            return std::shared_ptr<Serializer>(new Class(flags));               \
+        SerializerFactory::reg(#id, [](SerializerConfig config) {               \
+            return std::shared_ptr<Serializer>(new Class(config));              \
         });                                                                     \
         return Dummy();                                                         \
     }();
@@ -33,8 +34,8 @@ public:                                                                         
     void encode(std::ostream& os, const Serializable& value) const override;    \
                                                                                 \
 private:                                                                        \
-    explicit Class(uint32_t flags = 0)                                          \
-        : Serializer(flags) {}                                                  \
+    explicit Class(SerializerConfig config)                                     \
+        : Serializer(std::move(config)) {}                                      \
                                                                                 \
     static const Dummy _dummy;
 
@@ -45,8 +46,8 @@ namespace smr {
         static const uint32_t PRETTY = 1u << 1;
         static const uint32_t ESCAPED_UNICODE = 1u << 2;
 
-        explicit Serializer(uint32_t flags = 0)
-            : _flags(flags) {}
+        explicit Serializer(SerializerConfig config)
+            : _config(std::move(config)) {}
         Serializer(const Serializer&) = delete;
         Serializer& operator = (Serializer const&) = delete;
         Serializer(Serializer&&) noexcept = delete;
@@ -57,7 +58,11 @@ namespace smr {
         virtual Serializable decode(std::istream& is) const = 0;
         virtual void encode(std::ostream& os, const Serializable& value) const = 0;
 
+        SerializerConfig& getConfig() {
+            return _config;
+        }
+
     protected:
-        uint32_t _flags;
+        SerializerConfig _config;
     };
 }

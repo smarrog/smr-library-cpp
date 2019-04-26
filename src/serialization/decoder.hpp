@@ -13,15 +13,15 @@ namespace smr {
         Decoder& operator = (Decoder&&) noexcept = delete;
 
     protected:
-        Decoder(std::istream& is, size_t flags)
+        Decoder(std::istream& is, const SerializerConfig& config)
             : _is(is)
-            , _flags(flags) {}
+            , _config(config) {}
 
         std::istream& _is;
-        size_t _flags;
+        const SerializerConfig& _config;
 
         bool hasFlag(uint32_t flag) {
-            return (_flags & flag) > 0;
+            return (_config.flags & flag) > 0;
         }
     };
 }
