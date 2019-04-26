@@ -129,7 +129,9 @@ void JsonEncoder::encode(const Object& value) {
 void JsonEncoder::nextLine() {
 	if (_config.flags.isFlagSet(Serializer::PRETTY)) {
 		_os << '\n';
-		tokenToStream(_os, '\t', _offset);
+        for (auto i = 0; i < _offset; i++) {
+            tokenToStream(_os, '\t');
+        }
 	}
 }
 

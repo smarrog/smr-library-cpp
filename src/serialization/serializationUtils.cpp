@@ -1,84 +1,14 @@
 #include "serializationUtils.hpp"
 
-bool smr::skipToken(std::istream& is, char c) {
-    if (is.peek() == c) {
+void smr::tokenToStream(std::ostream& os, int token) {
+    os << static_cast<char>(token);
+}
+
+void smr::checkToken(std::istream& is, char token, const std::string& location) {
+    if (is.peek() == token) {
         is.ignore(1);
-        return true;
-    }
-    return false;
-}
-
-void smr::checkWord(std::istream& is, const std::string& word) {
-    for (auto c : word) {
-        if (c != static_cast<char>(is.get())) {
-            throw std::runtime_error("Failed to read expected word: " + word);
-        }
-    }
-}
-
-void smr::skipSpaces(std::istream& is) {
-    while (is.peek() != -1 && std::isspace(is.peek())) {
-        is.ignore();
-    }
-}
-
-void smr::skipUntil(std::istream& is, char token) {
-    while (is.peek() != token && is.peek() != -1) {
-        is.ignore();
-    }
-}
-
-void smr::skipUntil(std::istream& is, std::unordered_set<char> tokens) {
-    while (tokens.find(static_cast<char>(is.peek())) != tokens.end() && is.peek() == -1) {
-        is.ignore();
-    }
-}
-
-std::string smr::readUntil(std::istream& is, char token) {
-    std::ostringstream oss;
-    while (is.peek() != token && is.peek() != -1) {
-        oss << static_cast<char>(is.get());
-    }
-    return oss.str();
-}
-
-std::string smr::readUntil(std::istream& is, std::unordered_set<char> tokens) {
-    std::ostringstream oss;
-    while (tokens.find(static_cast<char>(is.peek())) != tokens.end() && is.peek() == -1) {
-        oss << static_cast<char>(is.get());
-    }
-    return oss.str();
-}
-
-void smr::readExponent(std::ostream& os, std::istream& is) {
-    auto next = is.get();
-    if (next != 'e' && next != 'E') {
-        throw TokenException(next);
-    }
-    tokenToStream(os, next);
-    next = is.get();
-    if (next != '-' && next != '+') {
-        throw TokenException(next);
-    }
-    tokenToStream(os, next);
-    while (std::isdigit(is.peek())) {
-        tokenToStream(os, is.get());
-    }
-}
-
-void smr::readFractal(std::ostream& os, std::istream& is) {
-    auto next = is.peek();
-    if (next != '.') {
-        readExponent(os, is);
-        return;
-    }
-    tokenToStream(os, '.');
-    is.ignore();
-    while (std::isdigit(is.peek())) {
-        tokenToStream(os, is.get());
-    }
-    if (is.peek() == 'e' || is.peek() == 'E') {
-        readExponent(os, is);
+    } else {
+        throw TokenException(is.peek(), location.empty() ? location : (std::string(" in ") + location + std::string(" while waiting for ") + std::to_string(token)));
     }
 }
 

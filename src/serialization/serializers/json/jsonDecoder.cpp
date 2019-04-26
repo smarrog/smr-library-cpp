@@ -11,6 +11,52 @@
 
 using namespace smr;
 
+void checkWord(std::istream& is, const std::string& word) {
+    for (auto c : word) {
+        if (c != static_cast<char>(is.get())) {
+            throw std::runtime_error("Failed to read expected word: " + word);
+        }
+    }
+}
+
+void skipSpaces(std::istream& is) {
+    while (is.peek() != -1 && std::isspace(is.peek())) {
+        is.ignore();
+    }
+}
+
+void readExponent(std::ostream& os, std::istream& is) {
+    auto next = is.get();
+    if (next != 'e' && next != 'E') {
+        throw TokenException(next);
+    }
+    tokenToStream(os, next);
+    next = is.get();
+    if (next != '-' && next != '+') {
+        throw TokenException(next);
+    }
+    tokenToStream(os, next);
+    while (std::isdigit(is.peek())) {
+        tokenToStream(os, is.get());
+    }
+}
+
+void readFractal(std::ostream& os, std::istream& is) {
+    auto next = is.peek();
+    if (next != '.') {
+        readExponent(os, is);
+        return;
+    }
+    tokenToStream(os, '.');
+    is.ignore();
+    while (std::isdigit(is.peek())) {
+        tokenToStream(os, is.get());
+    }
+    if (is.peek() == 'e' || is.peek() == 'E') {
+        readExponent(os, is);
+    }
+}
+
 Serializable JsonDecoder::decode() {
     skipSpaces(_is);
     switch (_is.peek()) {
@@ -50,17 +96,19 @@ Serializable JsonDecoder::decodeArray() {
     checkToken(_is, '[');
     Array result;
     skipSpaces(_is);
-    if (skipToken(_is, ']')) {
+    if (_is.peek() == ']') {
+        _is.ignore();
         return result;
     }
     while (_is.peek() != -1) {
         result.emplace_back(decode());
         skipSpaces(_is);
-        if (skipToken(_is, ',')) {
-            skipSpaces(_is);
+        if (_is.peek() == ',') {
+            _is.ignore();
             continue;
         }
-        if (skipToken(_is, ']')) {
+        if (_is.peek() == ']') {
+            _is.ignore();
             return result;
         }
         throw TokenException(_is.peek());
@@ -72,7 +120,8 @@ Serializable JsonDecoder::decodeObject() {
     checkToken(_is, '{');
     Object result;
     skipSpaces(_is);
-    if (skipToken(_is, '}')) {
+    if (_is.peek() == '}') {
+        _is.ignore();
         return result;
     }
     while (_is.peek() != -1) {
@@ -82,11 +131,13 @@ Serializable JsonDecoder::decodeObject() {
         skipSpaces(_is);
         result.emplace(move(key), decode());
         skipSpaces(_is);
-        if (skipToken(_is, ',')) {
+        if (_is.peek() == ',') {
+            _is.ignore();
             skipSpaces(_is);
             continue;
         }
-        if (skipToken(_is, '}')) {
+        if (_is.peek() == '}') {
+            _is.ignore();
             return result;
         }
         throw TokenException(_is.peek());
@@ -128,6 +179,9 @@ Serializable JsonDecoder::decodeNumber() {
         if (std::isdigit(next)) {
             left = (left << 3) + (left << 1) + next - 48;
             _is.ignore();
+            if (_is.peek() == -1) {
+                return isNegative ? -static_cast<int>(left) : static_cast<int>(left);
+            }
         } else if (next == '.' || next == 'e' || next == 'E') {
             std::ostringstream right;
             readFractal(right, _is);
