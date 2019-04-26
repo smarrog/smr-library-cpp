@@ -1,7 +1,7 @@
 #include "jsonEncoder.hpp"
 
 #include "serialization/serializationUtils.hpp"
-#include "../exceptions/tokenException.hpp"
+#include "serialization/exceptions/tokenException.hpp"
 
 using namespace smr;
 

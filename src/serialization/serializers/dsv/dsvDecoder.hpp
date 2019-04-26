@@ -1,7 +1,7 @@
 #pragma once
 
 #include "dsvSerializer.hpp"
-#include "../decoder.hpp"
+#include "serialization/decoder.hpp"
 
 #include "string_view"
 

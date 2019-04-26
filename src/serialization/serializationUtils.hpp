@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
+#include <unordered_set>
 #include <serialization/exceptions/tokenException.hpp>
 
 namespace smr {
@@ -17,8 +19,8 @@ namespace smr {
     }
 
     template <typename T>
-    void checkToken(std::istream& is, T c) {
-        if (is.peek() == c) {
+    void checkToken(std::istream& is, T token) {
+        if (is.peek() == token) {
             is.ignore(1);
         } else {
             throw TokenException(is.peek());
@@ -26,13 +28,18 @@ namespace smr {
     }
 
     template <typename T>
-    void checkToken(std::istream& is, T c, const std::string& location) {
+    void checkToken(std::istream& is, T token, const std::string& location) {
         try {
-            checkToken(is, c);
+            checkToken(is, token);
         } catch (...) {
-            throw TokenException(is.peek(), std::string(" in ") + location + std::string(" while waiting for ") + std::to_string(c));
+            throw TokenException(is.peek(), std::string(" in ") + location + std::string(" while waiting for ") + std::to_string(token));
         }
     }
+
+    void skipUntil(std::istream& is, char token);
+    void skipUntil(std::istream& is, std::unordered_set<char> tokens);
+    std::string readUntil(std::istream& is, char token);
+    std::string readUntil(std::istream& is, std::unordered_set<char> tokens);
 
     void utf8SymbolToStream(std::ostream& os, uint32_t symbol);
 

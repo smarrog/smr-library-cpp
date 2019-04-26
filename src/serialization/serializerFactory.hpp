@@ -19,7 +19,8 @@ namespace smr {
         SerializerFactory& operator = (SerializerFactory&&) noexcept = delete;
 
         static void reg(const std::string& type, SerializerConstructor constructor);
-        static std::shared_ptr<Serializer> build(const std::string& type, SerializerConfig config = {});
+        static std::shared_ptr<Serializer> build(const std::string& type);
+        static std::shared_ptr<Serializer> build(const std::string& type, SerializerConfig config);
     private:
         SerializerFactory() = default;
 

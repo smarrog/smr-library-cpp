@@ -1,7 +1,7 @@
 #pragma once
 
 #include "jsonSerializer.hpp"
-#include "../encoder.hpp"
+#include "serialization/encoder.hpp"
 
 namespace smr {
     class JsonEncoder final : public Encoder {

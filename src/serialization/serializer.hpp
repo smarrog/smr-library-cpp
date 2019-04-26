@@ -3,7 +3,7 @@
 #include "serialization/types/serializable.hpp"
 #include "serializerFactory.hpp"
 #include "serializerConfig.hpp"
-#include "../stuff/dummy.hpp"
+#include "stuff/dummy.hpp"
 
 #include <string>
 #include <vector>

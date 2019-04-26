@@ -1,7 +1,7 @@
 #include "jsonDecoder.hpp"
 
 #include "serialization/serializationUtils.hpp"
-#include "../exceptions/tokenException.hpp"
+#include "serialization/exceptions/tokenException.hpp"
 
 #include <string>
 #include <vector>

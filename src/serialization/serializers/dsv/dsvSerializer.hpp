@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../serializer.hpp"
+#include "serialization/serializer.hpp"
 
 namespace smr {
 	class DsvSerializer final : public Serializer {

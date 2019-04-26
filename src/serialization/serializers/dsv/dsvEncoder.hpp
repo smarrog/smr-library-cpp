@@ -1,7 +1,7 @@
 #pragma once
 
 #include "dsvSerializer.hpp"
-#include "../encoder.hpp"
+#include "serialization/encoder.hpp"
 
 namespace smr {
 	class DsvEncoder final : public Encoder {

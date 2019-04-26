@@ -17,9 +17,37 @@ void smr::checkWord(std::istream& is, const std::string& word) {
 }
 
 void smr::skipSpaces(std::istream& is) {
-    while (!is.eof() && std::isspace(is.peek())) {
+    while (is.peek() != -1 && std::isspace(is.peek())) {
         is.ignore();
     }
+}
+
+void smr::skipUntil(std::istream& is, char token) {
+    while (is.peek() != token && is.peek() != -1) {
+        is.ignore();
+    }
+}
+
+void smr::skipUntil(std::istream& is, std::unordered_set<char> tokens) {
+    while (tokens.find(static_cast<char>(is.peek())) != tokens.end() && is.peek() == -1) {
+        is.ignore();
+    }
+}
+
+std::string smr::readUntil(std::istream& is, char token) {
+    std::ostringstream oss;
+    while (is.peek() != token && is.peek() != -1) {
+        oss << static_cast<char>(is.get());
+    }
+    return oss.str();
+}
+
+std::string smr::readUntil(std::istream& is, std::unordered_set<char> tokens) {
+    std::ostringstream oss;
+    while (tokens.find(static_cast<char>(is.peek())) != tokens.end() && is.peek() == -1) {
+        oss << static_cast<char>(is.get());
+    }
+    return oss.str();
 }
 
 void smr::readExponent(std::ostream& os, std::istream& is) {
