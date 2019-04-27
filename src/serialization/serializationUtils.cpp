@@ -8,7 +8,7 @@ void smr::checkToken(std::istream& is, char token, const std::string& location) 
     if (is.peek() == token) {
         is.ignore(1);
     } else {
-        throw TokenException(is.peek(), location.empty() ? location : (std::string(" in ") + location + std::string(" while waiting for ") + std::to_string(token)));
+        throw UnexpectedTokenException(is.peek(), location.empty() ? location : (std::string(" in ") + location + std::string(" while waiting for ") + std::to_string(token)));
     }
 }
 
@@ -68,12 +68,12 @@ uint32_t smr::getUtf8Symbol(std::istream& is) {
         bytes = 2;
         symbol = static_cast<uint8_t>(next) & static_cast<uint8_t>(0b11111);
     } else {
-        throw TokenException(next);
+        throw UnexpectedTokenException(next);
     }
     while (--bytes && is.peek() != -1) {
         next = is.get();
         if ((next & 0b11000000) != 0b10000000) {
-            throw TokenException(next);
+            throw UnexpectedTokenException(next);
         }
         symbol = (symbol << 6) | (next & 0b0011'1111);
     }
@@ -84,7 +84,7 @@ uint32_t smr::getUnicodeSymbol(std::istream& is) {
     uint32_t value = 0;
     for (int i = 0; i < 4; i++) {
         if (is.peek() == -1) {
-            throw std::runtime_error("Unexpected eof");
+            throw UnexpectedEofException("unicode");
         }
         auto next = is.get();
         if (next >= '0' && next <= '9') {
@@ -94,7 +94,7 @@ uint32_t smr::getUnicodeSymbol(std::istream& is) {
         } else if (next >= 'a' && next <= 'f') {
             value = (value << 4) | ((10 + next - 'a') & 0x0F);
         } else {
-            throw TokenException(next);
+            throw UnexpectedTokenException(next);
         }
     }
     return value;
@@ -103,7 +103,7 @@ uint32_t smr::getUnicodeSymbol(std::istream& is) {
 uint32_t smr::getEscapedSymbol(std::istream& is) {
     checkToken(is, '\\');
     if (is.peek() == -1) {
-        throw std::runtime_error("Unexpected eof");
+	    throw UnexpectedEofException("escaped");
     }
     auto next = is.get();
     switch (next) {
@@ -119,7 +119,7 @@ uint32_t smr::getEscapedSymbol(std::istream& is) {
         case 'u':
             return getUnicodeSymbol(is);
         default:
-            throw TokenException(next);
+            throw UnexpectedTokenException(next);
     }
 }
 

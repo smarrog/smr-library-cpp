@@ -1,8 +1,7 @@
 #include "iniSerializer.hpp"
 #include "iniDecoder.hpp"
 #include "iniEncoder.hpp"
-#include "serialization/exceptions/decodeException.hpp"
-#include "serialization/exceptions/encodeException.hpp"
+#include "serialization/exceptions.hpp"
 
 #include <iostream>
 

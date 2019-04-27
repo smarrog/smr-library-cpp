@@ -1,7 +1,7 @@
 #include "iniDecoder.hpp"
 
 #include "serialization/serializationUtils.hpp"
-#include "serialization/exceptions/tokenException.hpp"
+#include "serialization/exceptions.hpp"
 
 using namespace smr;
 
@@ -28,7 +28,7 @@ void IniDecoder::decodeLine(std::string_view line) {
     }
     if (!_sectionPtr || line[0] == '[') {
         if (line[0] != '[') {
-            throw TokenException('[', " on parsing header");
+            throw UnexpectedTokenException('[', " on parsing header");
         }
         line.remove_prefix(1);
         auto pos = line.find(']');
@@ -50,33 +50,4 @@ void IniDecoder::decodeLine(std::string_view line) {
         std::string_view varValue = line.substr(0, std::min(line.find(';'), line.find('#')));
         _sectionPtr->insert({std::string(varName), std::string(varValue)});
     }
-
 }
-
-/*Serializable IniDecoder::decode() {
-    Object sections;
-    while (_is.peek() != -1) {
-        skipUntil(_is, '[');
-        decodeSection(sections);
-    }
-    return sections;
-}
-
-void IniDecoder::decodeSection(Object& sections) {
-    checkToken(_is, '[');
-    auto sectionName = readUntil(_is, ']');
-    if (_is.peek() == -1) {
-        throw std::runtime_error("Unexpected eof");
-    }
-    skipUntil(_is, '\n');
-    _is.ignore();
-    auto data = decodeObjectData();
-}
-
-Object IniDecoder::decodeObjectData() {
-    auto varName = readUntil(_is, '=');
-    _is.ignore(1);
-    auto varData = readUntil(_is, { ' ', '#', ';', '\n' });
-
-    return {};
-}*/

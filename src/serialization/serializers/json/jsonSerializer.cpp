@@ -1,8 +1,7 @@
 #include "jsonSerializer.hpp"
 #include "jsonDecoder.hpp"
 #include "jsonEncoder.hpp"
-#include "serialization/exceptions/decodeException.hpp"
-#include "serialization/exceptions/encodeException.hpp"
+#include "serialization/exceptions.hpp"
 
 #include <iostream>
 

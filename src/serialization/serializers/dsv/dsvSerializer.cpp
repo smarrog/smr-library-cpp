@@ -1,8 +1,7 @@
 #include "dsvSerializer.hpp"
 #include "dsvDecoder.hpp"
 #include "dsvEncoder.hpp"
-#include "serialization/exceptions/decodeException.hpp"
-#include "serialization/exceptions/encodeException.hpp"
+#include "serialization/exceptions.hpp"
 
 #include <iostream>
 

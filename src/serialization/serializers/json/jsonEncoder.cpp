@@ -1,7 +1,7 @@
 #include "jsonEncoder.hpp"
 
 #include "serialization/serializationUtils.hpp"
-#include "serialization/exceptions/tokenException.hpp"
+#include "serialization/exceptions.hpp"
 
 using namespace smr;
 
@@ -77,7 +77,7 @@ void JsonEncoder::encode(const std::string& value) {
                     break;
                 }
                 if (next > 0b1111'1101) {
-                    throw TokenException(next);
+                    throw UnexpectedTokenException(next);
                 } else if (next < 0b1000'0000) {
                     tokenToStream(_os, next);
                 } else {

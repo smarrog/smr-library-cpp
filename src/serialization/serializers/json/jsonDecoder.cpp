@@ -1,7 +1,7 @@
 #include "jsonDecoder.hpp"
 
 #include "serialization/serializationUtils.hpp"
-#include "serialization/exceptions/tokenException.hpp"
+#include "serialization/exceptions.hpp"
 
 #include <string>
 #include <vector>
@@ -28,12 +28,12 @@ void skipSpaces(std::istream& is) {
 void readExponent(std::ostream& os, std::istream& is) {
     auto next = is.get();
     if (next != 'e' && next != 'E') {
-        throw TokenException(next);
+        throw UnexpectedTokenException(next);
     }
     tokenToStream(os, next);
     next = is.get();
     if (next != '-' && next != '+') {
-        throw TokenException(next);
+        throw UnexpectedTokenException(next);
     }
     tokenToStream(os, next);
     while (std::isdigit(is.peek())) {
@@ -88,7 +88,7 @@ Serializable JsonDecoder::decode() {
         case '9':
             return decodeNumber();
         default:
-            throw TokenException(_is.peek());
+            throw UnexpectedTokenException(_is.peek());
     }
 }
 
@@ -111,9 +111,9 @@ Serializable JsonDecoder::decodeArray() {
             _is.ignore();
             return result;
         }
-        throw TokenException(_is.peek());
+        throw UnexpectedTokenException(_is.peek());
     }
-    throw std::runtime_error("Unexpected EOF");
+	throw UnexpectedEofException();
 }
 
 Serializable JsonDecoder::decodeObject() {
@@ -140,9 +140,9 @@ Serializable JsonDecoder::decodeObject() {
             _is.ignore();
             return result;
         }
-        throw TokenException(_is.peek());
+        throw UnexpectedTokenException(_is.peek());
     }
-    throw std::runtime_error("Unexpected EOF");
+	throw UnexpectedEofException("object");
 }
 
 Serializable JsonDecoder::decodeString() {
@@ -156,16 +156,16 @@ Serializable JsonDecoder::decodeString() {
         } else if (next == '\\') {
             utf8SymbolToStream(oss, getEscaped(_is));
         } else if (next < ' ' && next != '\t' && next != '\r' && next != '\n') {
-            throw TokenException(next);
+            throw UnexpectedTokenException(next);
         } else if (next > 0b1111'1101) {
-            throw TokenException(next);
+            throw UnexpectedTokenException(next);
         } else if (next < 0b1000'0000) {
             tokenToStream(oss, _is.get());
         } else {
             utf8SymbolToStream(oss, getUtf8Symbol(_is));
         }
     }
-    throw std::runtime_error("Unexpected EOF");
+	throw UnexpectedEofException("string");
 }
 
 Serializable JsonDecoder::decodeNumber() {
@@ -192,5 +192,5 @@ Serializable JsonDecoder::decodeNumber() {
             return isNegative ? -static_cast<int>(left) : static_cast<int>(left);
         }
     }
-    throw std::runtime_error("Unexpected EOF");
+	throw UnexpectedEofException("number");
 }
