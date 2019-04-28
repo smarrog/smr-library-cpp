@@ -9,7 +9,11 @@ Serializable DsvDecoder::decode() {
 	_expectedSize = array[0].asArray().size();
 	while (_is.peek() != -1) {
 		std::getline(_is, line, '\n');
-		array.emplace_back(decodeLine(line, _config.separator));
+		if (!line.empty()) {
+			array.emplace_back(decodeLine(line, _config.separator));
+		} else if (_config.flags.isFlagSet(Serializer::STRICT)) {
+			throw std::runtime_error("Unexpected empty line");
+		}
 	}
 	return array;
 }

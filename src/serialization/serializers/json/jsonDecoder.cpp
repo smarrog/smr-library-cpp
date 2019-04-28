@@ -58,38 +58,47 @@ void readFractal(std::ostream& os, std::istream& is) {
 }
 
 Serializable JsonDecoder::decode() {
-    skipSpaces(_is);
-    switch (_is.peek()) {
-        case '[':
-            return decodeArray();
-        case '{':
-            return decodeObject();
-        case '"':
-            return decodeString();
-        case 't':
-            checkWord(_is, "true");
-            return true;
-        case 'f':
-            checkWord(_is, "false");
-            return false;
-        case 'n':
-            checkWord(_is, "null");
-            return nullptr;
-        case '-':
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            return decodeNumber();
-        default:
-            throw UnexpectedTokenException(_is.peek());
-    }
+	auto value = decodeSerializable();
+	skipSpaces(_is);
+	if (_is.peek() != -1) {
+		throw UnexpectedTokenException(_is.peek());
+	}
+	return value;
+}
+
+Serializable JsonDecoder::decodeSerializable() {
+	skipSpaces(_is);
+	switch (_is.peek()) {
+		case '[':
+			return decodeArray();
+		case '{':
+			return decodeObject();
+		case '"':
+			return decodeString();
+		case 't':
+			checkWord(_is, "true");
+			return true;
+		case 'f':
+			checkWord(_is, "false");
+			return false;
+		case 'n':
+			checkWord(_is, "null");
+			return nullptr;
+		case '-':
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			return decodeNumber();
+		default:
+			throw UnexpectedTokenException(_is.peek());
+	}
 }
 
 Serializable JsonDecoder::decodeArray() {
@@ -101,7 +110,7 @@ Serializable JsonDecoder::decodeArray() {
         return result;
     }
     while (_is.peek() != -1) {
-        result.emplace_back(decode());
+        result.emplace_back(decodeSerializable());
         skipSpaces(_is);
         if (_is.peek() == ',') {
             _is.ignore();
@@ -129,7 +138,7 @@ Serializable JsonDecoder::decodeObject() {
         skipSpaces(_is);
         checkToken(_is, ':');
         skipSpaces(_is);
-        result.emplace(move(key), decode());
+        result.emplace(move(key), decodeSerializable());
         skipSpaces(_is);
         if (_is.peek() == ',') {
             _is.ignore();

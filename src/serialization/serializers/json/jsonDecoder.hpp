@@ -16,6 +16,7 @@ namespace smr {
 	    Serializable decode();
 
     private:
+	    Serializable decodeSerializable();
         Serializable decodeArray();
         Serializable decodeObject();
         Serializable decodeString();
