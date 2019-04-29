@@ -1,6 +1,5 @@
 #pragma once
 
-#include "iniSerializer.hpp"
 #include "serialization/encoder.hpp"
 
 namespace smr {

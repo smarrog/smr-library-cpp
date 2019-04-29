@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "serializerConfig.hpp"
+#include "config.hpp"
 
 namespace smr {
     class Serializer;

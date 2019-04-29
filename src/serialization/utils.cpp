@@ -1,4 +1,4 @@
-#include "serializationUtils.hpp"
+#include "utils.hpp"
 
 void smr::tokenToStream(std::ostream& os, int token) {
     os << static_cast<char>(token);

@@ -1,6 +1,6 @@
 #include "jsonDecoder.hpp"
 
-#include "serialization/serializationUtils.hpp"
+#include "serialization/utils.hpp"
 #include "serialization/exceptions.hpp"
 
 #include <string>

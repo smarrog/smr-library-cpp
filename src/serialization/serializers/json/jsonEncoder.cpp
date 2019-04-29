@@ -1,6 +1,6 @@
 #include "jsonEncoder.hpp"
 
-#include "serialization/serializationUtils.hpp"
+#include "serialization/utils.hpp"
 #include "serialization/exceptions.hpp"
 
 using namespace smr;
@@ -72,7 +72,7 @@ void JsonEncoder::encode(const std::string& value) {
                 _os << "\\r";
                 break;
             default:
-                if (!_config.flags.isFlagSet(Serializer::ESCAPED_UNICODE)) {
+                if (!_config.flags.isFlagSet(flags::ESCAPED_UNICODE)) {
                     tokenToStream(_os, next);
                     break;
                 }
@@ -127,7 +127,7 @@ void JsonEncoder::encode(const Object& value) {
 }
 
 void JsonEncoder::nextLine() {
-	if (_config.flags.isFlagSet(Serializer::PRETTY)) {
+	if (_config.flags.isFlagSet(flags::PRETTY)) {
 		_os << '\n';
         for (auto i = 0; i < _offset; i++) {
             tokenToStream(_os, '\t');
@@ -136,7 +136,7 @@ void JsonEncoder::nextLine() {
 }
 
 void JsonEncoder::addSpacing() {
-	if (_config.flags.isFlagSet(Serializer::PRETTY)) {
+	if (_config.flags.isFlagSet(flags::PRETTY)) {
 		tokenToStream(_os, ' ');
 	}
 }

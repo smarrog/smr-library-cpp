@@ -11,7 +11,7 @@ Serializable DsvDecoder::decode() {
 		std::getline(_is, line, '\n');
 		if (!line.empty()) {
 			array.emplace_back(decodeLine(line, _config.separator));
-		} else if (_config.flags.isFlagSet(Serializer::STRICT)) {
+		} else if (_config.flags.isFlagSet(flags::STRICT)) {
 			throw std::runtime_error("Unexpected empty line");
 		}
 	}

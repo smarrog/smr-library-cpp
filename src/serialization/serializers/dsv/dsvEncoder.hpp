@@ -1,6 +1,5 @@
 #pragma once
 
-#include "dsvSerializer.hpp"
 #include "serialization/encoder.hpp"
 
 namespace smr {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "dsvSerializer.hpp"
 #include "serialization/decoder.hpp"
 
 #include "string_view"

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "iniSerializer.hpp"
 #include "serialization/decoder.hpp"
 
 namespace smr {
@@ -17,10 +16,6 @@ namespace smr {
 
     private:
         void decodeLine(std::string_view line);
-
-        void decodeSection(Object& sections);
-        //std::string decodeSectionName();
-        Object decodeObjectData();
 
         Object _sections;
         Object* _sectionPtr;

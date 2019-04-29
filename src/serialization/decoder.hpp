@@ -1,5 +1,9 @@
 #pragma once
 
+#include "serialization/config.hpp"
+#include "serialization/flags.hpp"
+#include "serialization/types/serializable.hpp"
+
 #include <string>
 #include <stdexcept>
 #include <istream>

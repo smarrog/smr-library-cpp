@@ -1,6 +1,5 @@
 #pragma once
 
-#include "jsonSerializer.hpp"
 #include "serialization/encoder.hpp"
 
 namespace smr {

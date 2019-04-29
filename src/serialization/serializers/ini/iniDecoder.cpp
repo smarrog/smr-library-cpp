@@ -1,6 +1,6 @@
 #include "iniDecoder.hpp"
 
-#include "serialization/serializationUtils.hpp"
+#include "serialization/utils.hpp"
 #include "serialization/exceptions.hpp"
 
 using namespace smr;
