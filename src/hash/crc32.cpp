@@ -1,6 +1,6 @@
-#include "crc32Encoder.hpp"
+#include "crc32.hpp"
 
-#include <stdint.h>
+#include <array>
 
 using namespace smr;
 
@@ -50,14 +50,10 @@ static std::array<uint32_t, 256> TABLE = {
     0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
-void Crc32Encoder::encode(const Serializable& serializable) {
-    if (!serializable.isString()) {
-        throw std::runtime_error("value is not string");
-    }
-
+uint32_t Crc32::hash(const std::string& s) {
     uint32_t crc = 0xFFFFFFFF;
-    for (auto c : serializable.asString()) {
+    for (auto c : s) {
         crc = TABLE[(crc ^ c) & 0xFF] ^ (crc >> 8);
     }
-    _os << (crc ^ ~0U);
+    return crc ^ ~0U;
 }
