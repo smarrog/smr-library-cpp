@@ -31,7 +31,7 @@ void CommandErrors::reset() {
 }
 
 std::string CommandErrors::getMessage() const {
-	if (!hasErrors()) {
+	if (!hasError()) {
 		return "no errors";
 	}
 	return std::string("Unhandled errors: ") + std::to_string(_unhandledErrors.size());

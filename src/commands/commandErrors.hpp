@@ -8,7 +8,7 @@
 namespace smr {
 	class CommandErrors {
 	public:
-		using Handler = std::function<void(CommandError)>;
+		using Handler = std::function<void(const CommandError&)>;
 
 		void addError(std::string message);
 		void addError(std::string message, Handler handler);
@@ -20,7 +20,7 @@ namespace smr {
 			return !_unhandledErrors.empty();
 		}
 
-		bool hasErrors() const {
+		bool hasError() const {
 			return !_unhandledErrors.empty() || !_handledErrors.empty();
 		}
 
