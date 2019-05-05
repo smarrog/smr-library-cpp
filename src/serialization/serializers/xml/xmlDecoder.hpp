@@ -13,12 +13,5 @@ namespace smr {
 		XmlDecoder& operator = (XmlDecoder&&) noexcept = delete;
 
 		Serializable decode();
-
-	private:
-		Serializable decodeSerializable();
-		Serializable decodeArray();
-		Serializable decodeObject();
-		Serializable decodeString();
-		Serializable decodeNumber();
 	};
 }

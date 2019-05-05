@@ -13,7 +13,7 @@ void IniEncoder::encode(const Serializable& serializable) {
         }
         if (!isFirst) {
             _os << '\n';
-            if (_config.flags.isFlagSet(flags::PRETTY)) {
+            if (_config.flags.isFlagSet(serialization::flags::PRETTY)) {
                 _os << '\n';
             }
         }

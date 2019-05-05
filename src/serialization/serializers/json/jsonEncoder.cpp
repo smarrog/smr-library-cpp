@@ -72,7 +72,7 @@ void JsonEncoder::encode(const std::string& value) {
                 _os << "\\r";
                 break;
             default:
-                if (!_config.flags.isFlagSet(flags::ESCAPED_UNICODE)) {
+                if (!_config.flags.isFlagSet(serialization::flags::ESCAPED_UNICODE)) {
                     tokenToStream(_os, next);
                     break;
                 }
@@ -127,7 +127,7 @@ void JsonEncoder::encode(const Object& value) {
 }
 
 void JsonEncoder::nextLine() {
-	if (_config.flags.isFlagSet(flags::PRETTY)) {
+	if (_config.flags.isFlagSet(serialization::flags::PRETTY)) {
 		_os << '\n';
         for (auto i = 0; i < _offset; i++) {
             tokenToStream(_os, '\t');
@@ -136,7 +136,7 @@ void JsonEncoder::nextLine() {
 }
 
 void JsonEncoder::addSpacing() {
-	if (_config.flags.isFlagSet(flags::PRETTY)) {
+	if (_config.flags.isFlagSet(serialization::flags::PRETTY)) {
 		tokenToStream(_os, ' ');
 	}
 }
