@@ -8,7 +8,7 @@ void HttpRequest::addHeader(std::string name, std::string body) {
 
 std::string HttpRequest::serialize() const {
     std::ostringstream os;
-    os << _method << ' ' << _uri << ' ' << "HTTP/1.1\r\n";
+    os << _method << ' ' << _uri << ' ' << _version <<"\r\n";
     for (const auto& [ headerName, headerBody ] : _headers) {
         os << headerName << ": " << headerBody << "\r\n";
     }
