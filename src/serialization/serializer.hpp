@@ -25,6 +25,8 @@ namespace smr {
 
     #define DECLARE_SERIALIZER(Class)                                               \
     public:                                                                         \
+        explicit Class(SerializerConfig config = SerializerConfig())                \
+            : Serializer(std::move(config)) {}                                      \
         Class(const Class&) = delete;                                               \
         Class& operator = (Class const&) = delete;                                  \
         Class(Class&&) noexcept = delete;                                           \
@@ -36,9 +38,6 @@ namespace smr {
         void encode(std::ostream& os, const Serializable& value) const override;    \
                                                                                     \
     private:                                                                        \
-        explicit Class(SerializerConfig config)                                     \
-            : Serializer(std::move(config)) {}                                      \
-                                                                                    \
         static const Dummy _dummy;
 
     class Serializer {

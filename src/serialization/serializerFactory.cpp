@@ -14,10 +14,6 @@ void SerializerFactory::reg(const std::string& type, SerializerConstructor build
     factory._builders.emplace(type, builder);
 }
 
-std::shared_ptr<Serializer> SerializerFactory::build(const std::string& type) {
-    return build(type, SerializerConfig());
-}
-
 std::shared_ptr<Serializer> SerializerFactory::build(const std::string& type, SerializerConfig config) {
     auto& factory = getInstance();
     auto it = factory._builders.find(type);
