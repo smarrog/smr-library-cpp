@@ -6,7 +6,8 @@ namespace smr {
     class Amf3Decoder final : public Decoder {
     public:
         explicit Amf3Decoder(std::istream& is, const SerializerConfig& config)
-        : Decoder(is, config) {}
+            : Decoder(is, config) {}
+
         Amf3Decoder(const Amf3Decoder&) = delete;
         Amf3Decoder& operator = (Amf3Decoder const&) = delete;
         Amf3Decoder(Amf3Decoder&&) noexcept = delete;

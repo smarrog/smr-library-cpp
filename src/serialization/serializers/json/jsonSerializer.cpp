@@ -9,17 +9,17 @@ using namespace smr;
 
 REGISTER_SERIALIZER(json, JsonSerializer)
 
-Serializable JsonSerializer::decode(std::istream& is) const {
+Serializable JsonSerializer::decode(std::istream& is) {
     try {
-        return JsonDecoder(is, _config).decode();
+        return JsonDecoder(is, getConfig()).decode();
     } catch(std::exception& exception) {
         throw DecodeException("json", is, exception);
     }
 }
 
-void JsonSerializer::encode(std::ostream& os, const Serializable& value) const {
+void JsonSerializer::encode(std::ostream& os, const Serializable& value) {
     try {
-        return JsonEncoder(os, _config).encode(value);
+        return JsonEncoder(os, getConfig()).encode(value);
     } catch(std::exception& exception) {
         throw EncodeException("json", exception);
     }

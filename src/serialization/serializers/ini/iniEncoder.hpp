@@ -6,7 +6,7 @@ namespace smr {
     class IniEncoder final : public Encoder {
     public:
         explicit IniEncoder(std::ostream& os, const SerializerConfig& config)
-                : Encoder(os, config) {}
+            : Encoder(os, config) {}
 
         IniEncoder(const IniEncoder&) = delete;
         IniEncoder& operator = (IniEncoder const&) = delete;

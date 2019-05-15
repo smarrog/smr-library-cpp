@@ -13,17 +13,17 @@ using namespace smr;
 
 REGISTER_SERIALIZER(amf3, Amf3Serializer)
 
-Serializable Amf3Serializer::decode(std::istream& is) const {
+Serializable Amf3Serializer::decode(std::istream& is) {
     try {
-        return Amf3Decoder(is, _config).decode();
+        return Amf3Decoder(is, getConfig()).decode();
     } catch(std::exception& exception) {
         throw DecodeException("amf3", is, exception);
     }
 }
 
-void Amf3Serializer::encode(std::ostream& os, const Serializable& value) const {
+void Amf3Serializer::encode(std::ostream& os, const Serializable& value) {
     try {
-        return Amf3Encoder(os, _config).encode(value);
+        return Amf3Encoder(os, getConfig()).encode(value);
     } catch(std::exception& exception) {
         throw EncodeException("amf3", exception);
     }

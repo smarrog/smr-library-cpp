@@ -9,6 +9,7 @@ namespace smr {
 	public:
 		explicit DsvDecoder(std::istream& is, const SerializerConfig& config)
 		    : Decoder(is, config) {}
+
 		DsvDecoder(const DsvDecoder&) = delete;
 		DsvDecoder& operator = (DsvDecoder const&) = delete;
 		DsvDecoder(DsvDecoder&&) noexcept = delete;

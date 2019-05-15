@@ -9,17 +9,17 @@ using namespace smr;
 
 REGISTER_SERIALIZER(dsv, DsvSerializer)
 
-Serializable DsvSerializer::decode(std::istream& is) const {
+Serializable DsvSerializer::decode(std::istream& is) {
 	try {
-		return DsvDecoder(is, _config).decode();
+		return DsvDecoder(is, getConfig()).decode();
 	} catch(std::exception& exception) {
 		throw DecodeException("dsv", is, exception);
 	}
 }
 
-void DsvSerializer::encode(std::ostream& os, const Serializable& value) const {
+void DsvSerializer::encode(std::ostream& os, const Serializable& value) {
 	try {
-		return DsvEncoder(os, _config).encode(value);
+		return DsvEncoder(os, getConfig()).encode(value);
 	} catch(std::exception& exception) {
 		throw EncodeException("dsv", exception);
 	}

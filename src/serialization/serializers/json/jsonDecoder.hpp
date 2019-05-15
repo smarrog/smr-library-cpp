@@ -7,6 +7,7 @@ namespace smr {
     public:
 	    explicit JsonDecoder(std::istream& is, const SerializerConfig& config)
 	        : Decoder(is, config) {}
+
 	    JsonDecoder(const JsonDecoder&) = delete;
 	    JsonDecoder& operator = (JsonDecoder const&) = delete;
 	    JsonDecoder(JsonDecoder&&) noexcept = delete;

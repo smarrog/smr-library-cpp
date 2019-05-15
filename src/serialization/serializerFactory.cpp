@@ -1,11 +1,10 @@
 #include "serializerFactory.hpp"
 
-#include <stdexcept>
 #include <iostream>
 
 using namespace smr;
 
-void SerializerFactory::reg(const std::string& type, SerializerConstructor builder) {
+void SerializerFactory::reg(const std::string& type, SerializerConstructor builder) noexcept {
     auto& factory = getInstance();
     if (factory._builders.find(type) != factory._builders.end()) {
         std::cerr << "Serializer factory internal error: attempt redefine serializer with type  (" << type << '"';

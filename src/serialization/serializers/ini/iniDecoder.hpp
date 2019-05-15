@@ -7,6 +7,7 @@ namespace smr {
     public:
         explicit IniDecoder(std::istream& is, const SerializerConfig& config)
             : Decoder(is, config) {}
+
         IniDecoder(const IniDecoder&) = delete;
         IniDecoder& operator = (IniDecoder const&) = delete;
         IniDecoder(IniDecoder&&) noexcept = delete;
