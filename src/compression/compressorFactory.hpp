@@ -4,11 +4,9 @@
 #include <functional>
 #include <map>
 
-#include "compression/config.hpp"
+#include "compression/compressor.hpp"
 
 namespace smr {
-    class Compressor;
-
     using CompressorConstructor = std::function<std::shared_ptr<Compressor>(CompressorConfig)>;
 
     class CompressorFactory final {
