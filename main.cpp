@@ -47,19 +47,18 @@ void amf3test() {
     auto jsSerializer = SerializerFactory::build("json");
     jsSerializer->getConfig().flags.setFlags(serialization::flags::PRETTY | serialization::flags::ESCAPED_UNICODE);
     auto amf3Serializer = SerializerFactory::build("amf3");
+    amf3Serializer->getConfig().flags.setFlags(serialization::flags::HEADLESS);
 
     std::ifstream is("input.json");
     std::ofstream os("output.json");
 
-    std::fstream fs("tmp.bin");
-    std::ifstream libs("libs.bin");
+    std::ostringstream oss;
+    amf3Serializer->encode(oss, jsSerializer->decode(is));
+    auto decodedAmf = oss.str();
+    std::istringstream iss(decodedAmf);
+    jsSerializer->encode(os, amf3Serializer->decode(iss));
 
-    //jsSerializer->encode(os, jsSerializer->decode(is));
-
-    jsSerializer->encode(os, amf3Serializer->decode(libs));
-
-    //amf3Serializer->encode(fs, jsSerializer->decode(is));
-    //jsSerializer->encode(os, amf3Serializer->decode(fs));
+    //std::ifstream libs("libs.bin"); jsSerializer->encode(os, amf3Serializer->decode(libs));
 }
 
 void flagTest() {
@@ -134,10 +133,6 @@ void testHuf() {
     assert(oss.str() == s);
 }
 
-void testTree() {
-
-}
-
 int main() {
     flagTest();
     base64Test();
@@ -145,13 +140,11 @@ int main() {
     testCommands();
 
     //jsonTest();
-    //amf3test();
+    amf3test();
     //dsvTest();
     //iniTest();
 
     //testHuf();
-
-    testTree();
 
     return 0;
 }
