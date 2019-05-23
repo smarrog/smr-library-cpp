@@ -31,11 +31,11 @@ void readExponent(std::ostream& os, std::istream& is) {
         throw UnexpectedTokenException(next);
     }
     tokenToStream(os, next);
-    next = is.get();
-    if (next != '-' && next != '+') {
-        throw UnexpectedTokenException(next);
+    next = is.peek();
+    if (next == '-' || next == '+') {
+        tokenToStream(os, next);
+        is.ignore(1);
     }
-    tokenToStream(os, next);
     while (std::isdigit(is.peek())) {
         tokenToStream(os, is.get());
     }
