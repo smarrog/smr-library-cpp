@@ -47,6 +47,9 @@ namespace smr {
             return std::holds_alternative<Object>(*this);
         }
 
+        Undefined asUndefined() const {
+            return std::get<Undefined>(*this);
+        }
 	    std::nullptr_t asNull() const {
             return std::get<std::nullptr_t>(*this);
         }

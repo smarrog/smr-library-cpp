@@ -12,24 +12,28 @@ void smr::checkToken(std::istream& is, char token, const std::string& location) 
     }
 }
 
-void smr::utf8SymbolToStream(std::ostream& os, uint32_t symbol) {
+size_t smr::utf8SymbolToStream(std::ostream& os, uint32_t symbol) {
     if (symbol <= 0b0111'1111) { // 7bit -> 1byte
         tokenToStream(os, symbol);
+        return 1;
     }
     else if (symbol <= 0b0111'1111'1111) { // 11bit -> 2byte
         tokenToStream(os, 0b1100'0000 | (0b0001'1111 & (symbol >> 6)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 0)));
+        return 2;
     }
     else if (symbol <= 0b1111'1111'1111'1111) { // 16bit -> 3byte
         tokenToStream(os, 0b1110'0000 | (0b0000'1111 & (symbol >> 12)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 6)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 0)));
+        return 3;
     }
     else if (symbol <= 0b0001'1111'1111'1111'1111'1111) { // 21bit -> 4byte
         tokenToStream(os, 0b1111'0000 | (0b0000'0111 & (symbol >> 18)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 12)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 6)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 0)));
+        return 4;
     }
     else if (symbol <= 0b0011'1111'1111'1111'1111'1111'1111) { // 26bit -> 5byte
         tokenToStream(os, 0b1111'1000 | (0b0000'0011 & (symbol >> 24)));
@@ -37,6 +41,7 @@ void smr::utf8SymbolToStream(std::ostream& os, uint32_t symbol) {
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 12)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 6)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 0)));
+        return 5;
     }
     else if (symbol <= 0b0111'1111'1111'1111'1111'1111'1111'1111) { // 31bit -> 6byte
         tokenToStream(os, 0b1111'1100 | (0b0000'0001 & (symbol >> 30)));
@@ -45,7 +50,9 @@ void smr::utf8SymbolToStream(std::ostream& os, uint32_t symbol) {
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 12)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 6)));
         tokenToStream(os, 0b1000'0000 | (0b0011'1111 & (symbol >> 0)));
+        return 6;
     }
+    throw std::runtime_error(std::string("Can't pu utf8Symbol ") + std::to_string(symbol) + std::string(" to stream"));
 }
 
 uint32_t smr::getUtf8Symbol(std::istream& is) {
@@ -68,7 +75,7 @@ uint32_t smr::getUtf8Symbol(std::istream& is) {
         bytes = 2;
         symbol = static_cast<uint8_t>(next) & static_cast<uint8_t>(0b11111);
     } else {
-        throw UnexpectedTokenException(next);
+        return next;
     }
     while (--bytes && is.peek() != -1) {
         next = is.get();

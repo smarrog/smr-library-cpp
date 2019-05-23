@@ -1,6 +1,7 @@
 #pragma once
 
 #include "serialization/decoder.hpp"
+#include "amf3Context.hpp"
 
 namespace smr {
     class Amf3Decoder final : public Decoder {
@@ -16,7 +17,10 @@ namespace smr {
         Serializable decode();
 
     private:
+        Amf3Context _context;
+
         void decodeHeaders();
+        void decodeMessages();
 
         Serializable decodeInteger();
         Serializable decodeDouble();
@@ -32,6 +36,7 @@ namespace smr {
         Serializable decodeVectorObject();
         Serializable decodeDictionary();
 
-        int decode29BitInt();
+        int decodeHeadlessInteger();
+        std::string decodeHeadlessString();
     };
 }
